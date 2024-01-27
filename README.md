@@ -6,20 +6,20 @@
 **Introduction :** Micro-frontends is an architectural style where a frontend application is broken down into smaller, independent "micro" applications, each responsible for a specific feature or functionality. In this artical, I'll implement Micro-frontends using [Module Fedaration](https://github.com/originjs/vite-plugin-federation) (VITE + REACT). I'll go through step by step so that you can implement a micro-frontend architecture from scratch.
 
 ## 💬 First we will go through some topics?
- - **What is Micro-frontend? How does it works?** 🤔
- - **What is Module Fedaration? How does it works?** 🤔
- - **How to implement module federation using Vite?** 🤔
- - **Step by step installation procedure.**
- - **Module federation configuration setup for implementing micro-frontend.**
- - **Parent Module Configuration.**
- - **Child or Remote Module Configuration.**
- - **How to use child or remote modules inside the host or parent application**
- - **Some concepts we need to take care.**
- - **Why and when we have to use Micro-frontend**
- - **Conclusion**
+ - **1. What is Micro-frontend? How does it works?** 🤔
+ - **2. What is Module Fedaration? How does it works?** 🤔
+ - **3. How to implement module federation using Vite?** 🤔
+ - **4. Step by step installation procedure.**
+ - **5. Module federation configuration setup for implementing micro-frontend.**
+ - **6. Parent Module Configuration.**
+ - **7. Child or Remote Module Configuration.**
+ - **8. How to use child or remote modules inside the host or parent application**
+ - **9. Some concepts we need to take care.**
+ - **10. Why and when we have to use Micro-frontend**
+ - **11. Conclusion**
 
 
-### What is Micro-frontend? How does it works?
+## 1. What is Micro-frontend? How does it works?
 Micro Frontends is an architectural pattern that draws inspiration from microservices, focusing specifically on the front-end layer. It involves breaking down a monolithic front-end application into smaller, loosely coupled, and independently deployable components.
 
 The key principles of micro frontends include componentization, independent development and deployment, technology diversity, and team autonomy. These principles enable teams to work on different parts of the application simultaneously, leveraging their preferred technologies and frameworks.
@@ -63,7 +63,7 @@ Micro-frontends are an architectural approach to developing web applications tha
 - Updates or changes to one micro-frontend do not necessarily affect others, reducing the risk of unintended side effects.
 
 
-### What is Module Fedaration? How does it works?
+## 2. What is Module Fedaration? How does it works?
 Module Federation is a feature provided by Webpack, a popular JavaScript module bundler, that enables you to dynamically load and run code from different bundles at runtime. It's particularly useful in a micro-frontends architecture, where multiple independently developed and deployed applications need to work together to form a cohesive user interface.
 
 **Dynamic Loading of Remote Modules :**
@@ -90,7 +90,7 @@ Module Federation is a feature provided by Webpack, a popular JavaScript module 
 - Care should be taken to ensure a clean interface between different parts of the application to avoid tight coupling.
 
 
-### How to implement module federation using Vite? 
+## 3. How to implement module federation using Vite? 
 Vite does not have native support for Module Federation, you may need to use Webpack to achieve this. Below are generic steps you can follow using Webpack.
 - **Create Vite Projects :** Set up separate Vite projects for each micro-frontend. Each project should have its own Vite configuration.
 - **Install Webpack and Module Federation Plugin :** Install Webpack and the Module Federation plugin in each Vite project.
@@ -99,7 +99,7 @@ Vite does not have native support for Module Federation, you may need to use Web
 - **Mount Micro Frontends :** Inside the micro-frontends, create a mount function that accepts a container element and mounts the micro-frontend components.
 - **Run Micro Frontends :** Start the development servers for each micro-frontend and the main application.
 
-### Step by step installation procedure : 
+## 4. Step by step installation procedure : 
 - **First, let's create our directory using :**
 
     ```bash
@@ -143,10 +143,10 @@ Vite does not have native support for Module Federation, you may need to use Web
     ```
 **Integrate Micro-frontends in Main Application :** In your main application (which may be another Vite project or any other application), import and integrate the micro-frontends as needed. This integration might involve dynamic imports and mounting components from the micro-frontends. All configuration are mentioned below.
 
-### Module federation configuration setup for implementing micro-frontend :
+## 5. Module federation configuration setup for implementing micro-frontend :
 There are always minimum two places where we need to configure to get the module federation functionality. One configuration should be applied on the remote application where we have the components to be shared to tell Vite that what are the components that will be shared as modules and what is the entry name for the build. Other Configuration should be applied on the host application side where we gonna use the federated modules.
 
-### Parent Application Configuration :
+## 6. Parent Application Configuration :
 ```javascript
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -224,7 +224,7 @@ There are two ways to configure host application to bring in remote modules. One
 
 
 
-### Child/Remote Application Configuration :
+## 7. Child/Remote Application Configuration :
 
 ```javascript
 import { defineConfig } from 'vite';
@@ -283,7 +283,7 @@ export default defineConfig({
 
 - **Shared :** So this is bit of a complex property. When it comes to libraries like react we need to have one instance shared between all the libraries to handle states of components without an issue. So when we are working with remote modules we need a way to use one react instance in both remote module and the host application. To achieve this we need tell that what libraries will be shared between host and remote modules. This property will enable us to list those libraries. So we need to add this property in both host side configuration and remote application side configuration and add the same list of libraries in both side to be indicate what need to be shared. More details about [Shared](https://github.com/originjs/vite-plugin-federation) will found here.
 
-### How to use remote module inside the host application
+## 8. How to use remote module inside the host application
 There are two ways to use remote modules in a component in the host application.
 
 - **As a Static Import :** We can always add the remote module as a static import inside a react component.
@@ -334,7 +334,7 @@ declare module 'sharedComp/*' {};
 specifically :
 declare module 'sharedComp/Button';
 ```
-### Some concepts we need to take care.
+## 9. Some concepts we need to take care.
 There are few things we need to keep in mind when we are running the both Host and Remote applications.
 
 - Remember to run the remote application and host application in Preview mode when developing instead of Development mode to get the file serving working. Otherwise if we ran applications on dev mode because of dev server doesn’t serve files we cannot get the module federation working in dev mode.
@@ -342,7 +342,7 @@ There are few things we need to keep in mind when we are running the both Host a
 - Also remember when a component is shared it will be shared as a javascript module and not as an application. The responsibility of an application will be carried out by the host application that will bring in and uses the shared module. Hence when remote component uses environment variable or any other process related data will be pushed through host application to remote components. So when using remote component remember that host application will always be the platform that this remote component running on. Because even though remote component running on a separate server remember that remote server only serving a file at this point when comes to module federation and nothing more. You still can see the remote server side application running using URL but from host application side we are only referencing to the shared javascript module entry .js file. So make sure to provide every process related data from Host application even though they are provided in you remote application side.
 
 
-### Why and when we have to use Micro-frontend
+## 10. Why and when we have to use Micro-frontend
 Micro-frontend is to improve the scalability, flexibility, and maintainability of the frontend codebase. Here are some reasons why and when you might consider using micro-frontends:
 
 - **Independent Development and Deployment :** Team Autonomy: Micro-frontends allow different teams to work on separate features or modules independently, making it easier to release updates without coordination across the entire application.
@@ -351,7 +351,7 @@ Micro-frontend is to improve the scalability, flexibility, and maintainability o
 
 - **Team Collaboration :** Cross-Functional Teams: Micro-frontends align well with the concept of cross-functional teams, where each team is responsible for end-to-end development and maintenance of specific features or modules.
 
-### Conclusion
+## 11. Conclusion
 In conclusion, the adoption of micro-frontends can provide several benefits but comes with its own set of challenges. Here's a summary of key points to consider:
 
 **Advantages of Micro-frontends :**
