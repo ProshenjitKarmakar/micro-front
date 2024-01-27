@@ -1,6 +1,6 @@
 # 🚀 Micro-frontend with Module Federations (VITE + REACT)
 
-![Logo](https://www.mindinventory.com/blog/wp-content/uploads/2022/12/micro-frontend-architecture.webp)
+![Logo](https://raw.githubusercontent.com/ProshenjitKarmakar/micro-front/main/micro-frontend-architecture.webp)
 
 
 **Introduction :** Micro-frontends is an architectural style where a frontend application is broken down into smaller, independent "micro" applications, each responsible for a specific feature or functionality. In this artical, I'll implement Micro-frontends using [Module Fedaration](https://github.com/originjs/vite-plugin-federation) (VITE + REACT). I'll go through step by step so that you can implement a micro-frontend architecture from scratch.
